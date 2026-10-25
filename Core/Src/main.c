@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "stm32f103xb.h"
 #include "stm32f1xx_hal_tim.h"
 #include "tim.h"
 #include "usart.h"
@@ -93,9 +94,10 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+  int channel_index = 0;
+  uint32_t channel[2]={TIM_CHANNEL_2, TIM_CHANNEL_3};
   HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-  printf("USART2 OK!\r\n");
+  HAL_TIM_PWM_Start(&htim3, channel[channel_index]);
   int count=0;
   /* USER CODE END 2 */
 
@@ -113,9 +115,18 @@ int main(void)
       count=100;
       __HAL_TIM_SET_COUNTER(&htim1, 100);
     }
-    __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, count);
-
-
+    if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11)==GPIO_PIN_RESET)
+    {
+      HAL_Delay(10);
+      if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11)==GPIO_PIN_RESET)
+      {
+        HAL_TIM_PWM_Stop(&htim3, channel[channel_index]);
+        channel_index=!channel_index;
+        HAL_TIM_PWM_Start(&htim3, channel[channel_index]);
+      }
+       while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11)==GPIO_PIN_RESET);
+    }
+          __HAL_TIM_SET_COMPARE(&htim3, channel[channel_index], count);
     printf("COUNT = %d\r\n", count);
     HAL_Delay(100);
 
