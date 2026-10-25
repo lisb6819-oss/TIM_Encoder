@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "stm32f1xx_hal_tim.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -93,7 +94,7 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
   printf("USART2 OK!\r\n");
   int count=0;
   /* USER CODE END 2 */
@@ -103,8 +104,21 @@ int main(void)
   while (1)
   {
     count = __HAL_TIM_GET_COUNTER(&htim1);
+    if(count>6000) 
+    {
+      count=0;
+      __HAL_TIM_SET_COUNTER(&htim1, 0);
+    }else if(count>100) 
+    {
+      count=100;
+      __HAL_TIM_SET_COUNTER(&htim1, 100);
+    }
+    __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, count);
+
+
     printf("COUNT = %d\r\n", count);
-    HAL_Delay(500);
+    HAL_Delay(100);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
