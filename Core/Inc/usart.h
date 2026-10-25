@@ -29,13 +29,16 @@ extern "C" {
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-
+#define USART2_REC_LEN  200
+#define RXBUFFERSIZE 1
 /* USER CODE END Includes */
 
 extern UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN Private defines */
-
+extern uint8_t USART2_RX_BUF[USART2_REC_LEN];
+extern uint16_t USART2_RX_STA;
+extern uint8_t rx_buffer[RXBUFFERSIZE];
 /* USER CODE END Private defines */
 
 void MX_USART2_UART_Init(void);
@@ -49,4 +52,3 @@ void MX_USART2_UART_Init(void);
 #endif
 
 #endif /* __USART_H__ */
-
