@@ -92,13 +92,19 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+  HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
   printf("USART2 OK!\r\n");
+  int count=0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    count = __HAL_TIM_GET_COUNTER(&htim1);
+    printf("COUNT = %d\r\n", count);
+    HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

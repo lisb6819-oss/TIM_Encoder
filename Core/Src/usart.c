@@ -19,7 +19,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
-#include "stm32f103xb.h"
 
 /* USER CODE BEGIN 0 */
 
@@ -168,3 +167,4 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
       HAL_UART_Receive_IT(&huart2, rx_buffer, RXBUFFERSIZE); //开启下次接收中断
   }
 /* USER CODE END 1 */
+
